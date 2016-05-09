@@ -6,6 +6,31 @@ repositories{
 	mavenCentral();
 }
 
+sourceSets{
+	main{
+		java{
+			srcDir 'src/main/java'
+		}
+		resources{
+			srcDir 'src/main/resources'
+		}
+	}
+	
+	test{
+		java{
+			srcDir 'src/test/java'
+		}
+		resources{
+			srcDir 'src/test/resources'
+		}
+		
+		compileClasspath = sourceSets.main.output + configurations.testCompile + sourceSets.main.resources
+		runtimeClasspath = output + compileClasspath
+	}
+	
+	
+}
+
 task createJavaProject << {
     sourceSets*.java.srcDirs*.each { it.mkdirs() }
     sourceSets*.resources.srcDirs*.each { it.mkdirs()}
@@ -18,7 +43,8 @@ task createWebProject(dependsOn: 'createJavaProject') << {
 
 List spring=[
 	'org.springframework:spring-context:4.2.4.RELEASE',
-	'org.springframework:spring-web:4.2.4.RELEASE'
+	'org.springframework:spring-web:4.2.4.RELEASE',
+	'org.springframework:spring-webmvc:4.2.4.RELEASE'
 ]
 
 List mysql=[
